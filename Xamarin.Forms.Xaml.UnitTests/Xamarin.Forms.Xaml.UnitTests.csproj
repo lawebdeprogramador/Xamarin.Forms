@@ -86,6 +86,9 @@
     <Compile Include="OnPlatformTests.cs" />
     <Compile Include="NullExtensionTests.cs" />
     <Compile Include="TypeExtensionTests.cs" />
+    <Compile Include="VisualStateManagerTests.xaml.cs">
+      <DependentUpon>VisualStateManagerTests.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XamlgTests.cs" />
     <Compile Include="Issues\TestCases.cs" />
     <Compile Include="Issues\Issue1493.cs" />
@@ -514,7 +517,7 @@
     <Compile Include="ImplicitResourceDictionaries.xaml.cs">
       <DependentUpon>ImplicitResourceDictionaries.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutoMergedResourceDictionaries.xaml.cs" >
+    <Compile Include="AutoMergedResourceDictionaries.xaml.cs">
       <DependentUpon>AutoMergedResourceDictionaries.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -991,5 +994,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="VisualStateManagerTests.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
