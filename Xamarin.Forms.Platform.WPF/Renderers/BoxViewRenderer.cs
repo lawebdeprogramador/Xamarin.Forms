@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using WRectangle = System.Windows.Shapes.Rectangle;
 
 namespace Xamarin.Forms.Platform.WPF
@@ -20,6 +15,7 @@ namespace Xamarin.Forms.Platform.WPF
 				}
 
 				UpdateColor();
+				UpdateCornerRadius();
 			}
 
 			base.OnElementChanged(e);
@@ -31,12 +27,21 @@ namespace Xamarin.Forms.Platform.WPF
 
 			if (e.PropertyName == BoxView.ColorProperty.PropertyName)
 				UpdateColor();
+			else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+				UpdateCornerRadius();
 		}
 
 		void UpdateColor()
 		{
 			Color color = Element.Color != Color.Default ? Element.Color : Element.BackgroundColor;
 			Control.UpdateDependencyColor(WRectangle.FillProperty, color);
+		}
+
+		void UpdateCornerRadius()
+		{
+			var cornerRadius = Element.CornerRadius;
+			Control.RadiusX = cornerRadius.TopLeft;
+			Control.RadiusY = cornerRadius.BottomRight;
 		}
 	}
 }

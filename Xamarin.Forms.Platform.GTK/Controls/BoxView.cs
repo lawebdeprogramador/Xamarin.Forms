@@ -47,11 +47,11 @@ namespace Xamarin.Forms.Platform.GTK.Controls
             }
         }
 
-        public void UpdateHasBorderRadius(bool hasBorderRadius)
+        public void UpdateHasBorderRadius(int radius = 5)
         {
             if (_boxView != null)
             {
-                _boxView.Radius = hasBorderRadius ? 5 : 0;
+                _boxView.Radius = radius > 0 ? radius : 0;
             }
         }
     }

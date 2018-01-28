@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
+using Xamarin.Forms.Core;
 using Xamarin.Forms.Platform.GTK.Extensions;
 using Xamarin.Forms.PlatformConfiguration.GTKSpecific;
 
 namespace Xamarin.Forms.Platform.GTK.Renderers
 {
-    public class BoxViewRenderer : ViewRenderer<BoxView, Controls.BoxView>
+	public class BoxViewRenderer : ViewRenderer<BoxView, Controls.BoxView>
     {
         protected override void OnElementChanged(ElementChangedEventArgs<BoxView> e)
         {
@@ -16,7 +17,8 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
                 }
 
                 SetColor(Element.Color);
-                SetSize();
+				SetCornerRadius(Element.CornerRadius);
+				SetSize();
             }
 
             base.OnElementChanged(e);
@@ -28,12 +30,14 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 
             if (e.PropertyName == BoxView.ColorProperty.PropertyName)
                 SetColor(Element.Color);
-            else if (e.PropertyName ==
+			else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+				SetCornerRadius(Element.CornerRadius);
+			else if (e.PropertyName ==
               PlatformConfiguration.GTKSpecific.BoxView.HasCornerRadiusProperty.PropertyName)
                 SetHasCornerRadius();
         }
 
-        protected override void OnSizeAllocated(Gdk.Rectangle allocation)
+		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
         {
             SetSize();
 
@@ -67,7 +71,15 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
             }
         }
 
-        private void SetSize()
+		private void SetCornerRadius(CornerRadius cornerRadius)
+		{
+			if (Element == null || Control == null)
+				return;
+
+			Control.UpdateHasBorderRadius((int)cornerRadius.TopLeft);
+		}
+
+		private void SetSize()
         {
             int height = HeightRequest;
             int width = WidthRequest;
@@ -79,7 +91,7 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
         {
             var hasCornerRadius = Element.OnThisPlatform().GetHasCornerRadius();
 
-            Control.UpdateHasBorderRadius(hasCornerRadius);
+            Control.UpdateHasBorderRadius();
         }
     }
 }

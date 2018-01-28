@@ -35,7 +35,10 @@ namespace Xamarin.Forms.Platform.iOS
 			base.OnElementChanged(e);
 
 			if (Element != null)
+			{
 				SetBackgroundColor(Element.BackgroundColor);
+				SetCornerRadius();
+			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -43,6 +46,8 @@ namespace Xamarin.Forms.Platform.iOS
 			base.OnElementPropertyChanged(sender, e);
 			if (e.PropertyName == BoxView.ColorProperty.PropertyName)
 				SetBackgroundColor(Element.BackgroundColor);
+			else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+				SetCornerRadius();
 			else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
 				SetNeedsDisplay();
 		}
@@ -59,6 +64,17 @@ namespace Xamarin.Forms.Platform.iOS
 				_colorToRenderer = color.ToUIColor();
 
 			SetNeedsDisplay();
+		}
+
+		private void SetCornerRadius()
+		{
+			if (Element == null)
+				return;
+
+			var elementCornerRadius = Element.CornerRadius;
+
+			Layer.MasksToBounds = true;
+			Layer.CornerRadius = (float)elementCornerRadius.TopLeft;
 		}
 	}
 }

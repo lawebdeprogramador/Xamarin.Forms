@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
 using Android.Content;
+using Android.Graphics.Drawables;
 using Android.Views;
-using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace Xamarin.Forms.Platform.Android
 {
@@ -36,6 +36,7 @@ namespace Xamarin.Forms.Platform.Android
 			_motionEventHelper.UpdateElement(e.NewElement);
 
 			UpdateBackgroundColor();
+			UpdateCornerRadius();
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -44,16 +45,47 @@ namespace Xamarin.Forms.Platform.Android
 
 			if (e.PropertyName == BoxView.ColorProperty.PropertyName || e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
 				UpdateBackgroundColor();
+			else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+				UpdateCornerRadius();
 		}
 
 		protected override void UpdateBackgroundColor()
 		{
 			Color colorToSet = Element.Color;
 
-			if (colorToSet == Color.Default)
-				colorToSet = Element.BackgroundColor;
+			var background = new GradientDrawable();
 
-			SetBackgroundColor(colorToSet.ToAndroid(Color.Transparent));
+			if (colorToSet != Color.Default)
+				background.SetColor(colorToSet.ToAndroid());
+			else
+				background.SetColor(colorToSet.ToAndroid(Color.Transparent));
+
+			Background = background;
+		}
+
+		private void UpdateCornerRadius()
+		{
+			var cornerRadius = Element.CornerRadius;
+
+			if (Background is GradientDrawable backgroundGradient)
+			{
+				var cornerRadii = new[] 
+				{
+					(float)(cornerRadius.TopLeft),
+					(float)(cornerRadius.TopLeft),
+
+					(float)(cornerRadius.TopRight),
+					(float)(cornerRadius.TopRight),
+
+					(float)(cornerRadius.BottomRight),
+					(float)(cornerRadius.BottomRight),
+
+					(float)(cornerRadius.BottomLeft),
+					(float)(cornerRadius.BottomLeft)
+				};
+
+				backgroundGradient.SetCornerRadii(cornerRadii);
+			}
 		}
 	}
 }
