@@ -40,7 +40,7 @@ namespace Xamarin.Forms.Platform.MacOS
 			Control.Layer.BackgroundColor = color.ToCGColor();
 		}
 
-		private void SetCornerRadius()
+		void SetCornerRadius()
 		{
 			if (Element == null)
 				return;
