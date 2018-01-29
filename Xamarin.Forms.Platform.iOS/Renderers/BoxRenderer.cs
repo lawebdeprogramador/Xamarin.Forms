@@ -66,7 +66,7 @@ namespace Xamarin.Forms.Platform.iOS
 			SetNeedsDisplay();
 		}
 
-		private void SetCornerRadius()
+		void SetCornerRadius()
 		{
 			if (Element == null)
 				return;

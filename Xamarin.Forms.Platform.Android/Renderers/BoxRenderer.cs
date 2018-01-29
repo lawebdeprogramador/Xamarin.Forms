@@ -63,13 +63,13 @@ namespace Xamarin.Forms.Platform.Android
 			Background = background;
 		}
 
-		private void UpdateCornerRadius()
+		void UpdateCornerRadius()
 		{
 			var cornerRadius = Element.CornerRadius;
 
 			if (Background is GradientDrawable backgroundGradient)
 			{
-				var cornerRadii = new[] 
+				var cornerRadii = new[]
 				{
 					(float)(cornerRadius.TopLeft),
 					(float)(cornerRadius.TopLeft),
