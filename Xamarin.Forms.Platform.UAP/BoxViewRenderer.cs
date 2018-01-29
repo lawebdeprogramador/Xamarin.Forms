@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation.Peers;
-using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Controls;
 
 namespace Xamarin.Forms.Platform.UWP
 {
-	public class BoxViewRenderer : ViewRenderer<BoxView, Windows.UI.Xaml.Shapes.Rectangle>
+	public class BoxViewRenderer : ViewRenderer<BoxView, Border>
 	{
 		protected override void OnElementChanged(ElementChangedEventArgs<BoxView> e)
 		{
@@ -15,11 +15,12 @@ namespace Xamarin.Forms.Platform.UWP
 			{
 				if (Control == null)
 				{
-					var rect = new Windows.UI.Xaml.Shapes.Rectangle
+					var rect = new Border
 					{
 						DataContext = Element
 					};
-					rect.SetBinding(Shape.FillProperty, new Windows.UI.Xaml.Data.Binding { Converter = new ColorConverter(), Path = new PropertyPath("Color") });
+
+					rect.SetBinding(Border.BackgroundProperty, new Windows.UI.Xaml.Data.Binding { Converter = new ColorConverter(), Path = new PropertyPath("Color") });
 
 					SetNativeControl(rect);
 				}
@@ -49,8 +50,11 @@ namespace Xamarin.Forms.Platform.UWP
 
 		private void SetCornerRadius(Core.CornerRadius cornerRadius)
 		{
-			Control.RadiusX = cornerRadius.TopLeft;
-			Control.RadiusY = cornerRadius.BottomRight;
+			Control.CornerRadius = new CornerRadius(
+				cornerRadius.TopLeft,
+				cornerRadius.TopRight,
+				cornerRadius.BottomRight,
+				cornerRadius.BottomLeft);
 		}
 	}
 }
