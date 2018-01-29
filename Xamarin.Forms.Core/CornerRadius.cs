@@ -16,13 +16,13 @@ namespace Xamarin.Forms.Core
 		public CornerRadius(double topLeft, double topRight, double bottomLeft, double bottomRight)
 		{
 			if (topLeft < 0 || double.IsNaN(topLeft))
-				throw new ArgumentException("TopLeft is less than 0 or is not a number", "topLeft");
+				throw new ArgumentException("TopLeft is less than 0 or is not of type " + typeof(double), nameof(topLeft));
 			if (topRight < 0 || double.IsNaN(topRight))
-				throw new ArgumentException("TopRight is less than 0 or is not a number", "topRight");
+				throw new ArgumentException("TopRight is less than 0 or is not of type " + typeof(double), nameof(topRight));
 			if (bottomLeft < 0 || double.IsNaN(bottomLeft))
-				throw new ArgumentException("BottomLeft is less than 0 or is not a number", "bottomLeft");
+				throw new ArgumentException("BottomLeft is less than 0 or is not of type " + typeof(double), nameof(bottomLeft));
 			if (bottomRight < 0 || double.IsNaN(bottomRight))
-				throw new ArgumentException("BottomRight is less than 0 or is not a number", "bottomRight");
+				throw new ArgumentException("BottomRight is less than 0 or is not of type " + typeof(double), nameof(bottomRight));
 
 			TopLeft = topLeft;
 			TopRight = topRight;
