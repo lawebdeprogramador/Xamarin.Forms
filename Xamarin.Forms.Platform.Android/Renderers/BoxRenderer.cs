@@ -8,6 +8,9 @@ namespace Xamarin.Forms.Platform.Android
 {
 	public class BoxRenderer : VisualElementRenderer<BoxView>
 	{
+		bool _disposed;
+		GradientDrawable _backgroundDrawable;
+
 		readonly MotionEventHelper _motionEventHelper = new MotionEventHelper();
 
 		public BoxRenderer(Context context) : base(context)
@@ -53,14 +56,43 @@ namespace Xamarin.Forms.Platform.Android
 		{
 			Color colorToSet = Element.Color;
 
-			var background = new GradientDrawable();
+			if (_backgroundDrawable == null)
+				_backgroundDrawable = new GradientDrawable();
 
 			if (colorToSet != Color.Default)
-				background.SetColor(colorToSet.ToAndroid());
+				_backgroundDrawable.SetColor(colorToSet.ToAndroid());
 			else
-				background.SetColor(colorToSet.ToAndroid(Color.Transparent));
+				_backgroundDrawable.SetColor(colorToSet.ToAndroid(Color.Transparent));
 
-			Background = background;
+			Background = _backgroundDrawable;
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (_disposed)
+				return;
+
+			_disposed = true;
+
+			if (disposing)
+			{
+				if (_backgroundDrawable != null)
+				{
+					_backgroundDrawable.Dispose();
+					_backgroundDrawable = null;
+				}
+
+				if (Element != null)
+				{
+					Element.PropertyChanged -= OnElementPropertyChanged;
+
+					if (Platform.GetRenderer(Element) == this)
+						Element.ClearValue(Platform.RendererProperty);
+				}
+
+			}
+
+			base.Dispose(disposing);
 		}
 
 		void UpdateCornerRadius()
