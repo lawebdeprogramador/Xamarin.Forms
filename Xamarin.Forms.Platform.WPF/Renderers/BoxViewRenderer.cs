@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
-using WRectangle = System.Windows.Shapes.Rectangle;
+using System.Windows.Controls;
 
 namespace Xamarin.Forms.Platform.WPF
 {
-	public class BoxViewRenderer : ViewRenderer<BoxView, WRectangle>
+	public class BoxViewRenderer : ViewRenderer<BoxView, Border>
 	{
 		protected override void OnElementChanged(ElementChangedEventArgs<BoxView> e)
 		{
@@ -11,7 +11,7 @@ namespace Xamarin.Forms.Platform.WPF
 			{
 				if (Control == null) // construct and SetNativeControl and suscribe control event
 				{
-					SetNativeControl(new WRectangle());
+					SetNativeControl(new Border());
 				}
 
 				UpdateColor();
@@ -34,14 +34,18 @@ namespace Xamarin.Forms.Platform.WPF
 		void UpdateColor()
 		{
 			Color color = Element.Color != Color.Default ? Element.Color : Element.BackgroundColor;
-			Control.UpdateDependencyColor(WRectangle.FillProperty, color);
+			Control.UpdateDependencyColor(Border.BackgroundProperty, color);
 		}
 
 		void UpdateCornerRadius()
 		{
 			var cornerRadius = Element.CornerRadius;
-			Control.RadiusX = cornerRadius.TopLeft;
-			Control.RadiusY = cornerRadius.BottomRight;
+
+			Control.CornerRadius = new System.Windows.CornerRadius(
+				cornerRadius.TopLeft, 
+				cornerRadius.TopRight, 
+				cornerRadius.BottomRight, 
+				cornerRadius.BottomLeft);
 		}
 	}
 }
