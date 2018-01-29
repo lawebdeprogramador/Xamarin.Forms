@@ -244,7 +244,7 @@ namespace Xamarin.Forms.Controls
 			}
 		}
 
-		List<GalleryPageFactory> _pages = new List<GalleryPageFactory> {
+		List<GalleryPageFactory> _pages = new List<GalleryPageFactory> {			    
 				new GalleryPageFactory(() => new VisualStateManagerGallery(), "VisualStateManager Gallery"),
 				new GalleryPageFactory(() => new FlowDirectionGalleryLandingPage(), "FlowDirection"),
 				new GalleryPageFactory(() => new AutomationPropertiesGallery(), "Accessibility"),
@@ -291,6 +291,7 @@ namespace Xamarin.Forms.Controls
 				new GalleryPageFactory(() => new TableViewCoreGalleryPage(), "TableView Gallery"),
 				new GalleryPageFactory(() => new TimePickerCoreGalleryPage(), "TimePicker Gallery"),
 				new GalleryPageFactory(() => new WebViewCoreGalleryPage(), "WebView Gallery"),
+				new GalleryPageFactory(() => new RepeaterGalleryPage(), "Repeater Gallery"),
 				//pages
  				new GalleryPageFactory(() => new RootContentPage ("Content"), "RootPages Gallery"),
 				new GalleryPageFactory(() => new MasterDetailPageTabletPage(), "MasterDetailPage Tablet Page"),
