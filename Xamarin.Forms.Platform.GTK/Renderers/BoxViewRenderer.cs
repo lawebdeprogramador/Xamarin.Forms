@@ -76,7 +76,7 @@ namespace Xamarin.Forms.Platform.GTK.Renderers
 			if (Element == null || Control == null)
 				return;
 
-			Control.UpdateHasBorderRadius((int)cornerRadius.TopLeft);
+			Control.UpdateHasBorderRadius((int)cornerRadius.TopLeft, (int)cornerRadius.TopRight, (int)cornerRadius.BottomLeft, (int)cornerRadius.BottomRight);
 		}
 
 		private void SetSize()

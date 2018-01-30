@@ -47,12 +47,15 @@ namespace Xamarin.Forms.Platform.GTK.Controls
             }
         }
 
-        public void UpdateHasBorderRadius(int radius = 5)
+        public void UpdateHasBorderRadius(int topLeftRadius = 5, int topRightRadius = 5, int bottomLeftRadius = 5, int bottomRightRadius = 5)
         {
             if (_boxView != null)
             {
-                _boxView.Radius = radius > 0 ? radius : 0;
-            }
+                _boxView.TopLeftRadius = topLeftRadius > 0 ? topLeftRadius : 0;
+				_boxView.TopRightRadius = topRightRadius > 0 ? topRightRadius : 0;
+				_boxView.BottomLeftRadius = bottomLeftRadius > 0 ? bottomLeftRadius : 0;
+				_boxView.BottomRightRadius = bottomRightRadius > 0 ? bottomRightRadius : 0;
+			}
         }
     }
 
@@ -63,7 +66,7 @@ namespace Xamarin.Forms.Platform.GTK.Controls
         private Gdk.Color _color;
         private int _height;
         private int _width;
-        private int _radius;
+        private int _topLeftRadius, _topRightRadius, _bottomLeftRadius, _bottomRightRadius;
 
         public BoxViewDrawingArea()
         {
@@ -99,17 +102,47 @@ namespace Xamarin.Forms.Platform.GTK.Controls
             }
         }
 
-        public int Radius
-        {
-            get { return (_radius); }
+        public int TopLeftRadius
+		{
+            get { return (_topLeftRadius); }
             set
             {
-                _radius = value;
+				_topLeftRadius = value;
                 QueueDraw();
             }
         }
 
-        protected override bool OnExposeEvent(EventExpose ev)
+		public int TopRightRadius
+		{
+			get { return (_topRightRadius); }
+			set
+			{
+				_topRightRadius = value;
+				QueueDraw();
+			}
+		}
+
+		public int BottomLeftRadius
+		{
+			get { return (_bottomLeftRadius); }
+			set
+			{
+				_bottomLeftRadius = value;
+				QueueDraw();
+			}
+		}
+
+		public int BottomRightRadius
+		{
+			get { return (_bottomRightRadius); }
+			set
+			{
+				_bottomRightRadius = value;
+				QueueDraw();
+			}
+		}
+
+		protected override bool OnExposeEvent(EventExpose ev)
         {
             using (var cr = CairoHelper.Create(GdkWindow))
             {
@@ -134,7 +167,7 @@ namespace Xamarin.Forms.Platform.GTK.Controls
             int clipHeight = ev.Area.Height > 0 ? Height : 0;
             int clipWidth = ev.Area.Width > 0 ? Width : 0;
 
-            double radius = Radius;
+            double radius = TopLeftRadius;
             int x = 0;
             int y = 0;
             int width = Width;
@@ -147,10 +180,10 @@ namespace Xamarin.Forms.Platform.GTK.Controls
                 clipWidth);
 
             cr.MoveTo(x, y);
-            cr.Arc(x + width - radius, y + radius, radius, Math.PI * 1.5, Math.PI * 2);
-            cr.Arc(x + width - radius, y + height - radius, radius, 0, Math.PI * .5);
-            cr.Arc(x + radius, y + height - radius, radius, Math.PI * .5, Math.PI);
-            cr.Arc(x + radius, y + radius, radius, Math.PI, Math.PI * 1.5);
+            cr.Arc(x + width - TopRightRadius, y + TopRightRadius, TopRightRadius, Math.PI * 1.5, Math.PI * 2);
+            cr.Arc(x + width - BottomRightRadius, y + height - BottomRightRadius, BottomRightRadius, 0, Math.PI * .5);
+            cr.Arc(x + BottomLeftRadius, y + height - BottomLeftRadius, BottomLeftRadius, Math.PI * .5, Math.PI);
+            cr.Arc(x + TopLeftRadius, y + TopLeftRadius, TopLeftRadius, Math.PI, Math.PI * 1.5);
 
             var cairoColor = new Cairo.Color(
                (double)Color.Red / ushort.MaxValue,
