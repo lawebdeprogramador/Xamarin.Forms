@@ -88,6 +88,8 @@ namespace Xamarin.Forms.Platform.Android
 				UpdateBackgroundColor();
 				UpdateOrientation();
 				UpdateIsEnabled();
+				UpdateHorizontalScrollBarVisibility();
+				UpdateVerticalScrollBarVisibility();
 
 				element.SendViewInitialized(this);
 
@@ -278,6 +280,10 @@ namespace Xamarin.Forms.Platform.Android
 				UpdateOrientation();
 			else if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
 				UpdateIsEnabled();
+			else if (e.PropertyName == ScrollView.HorizontalScrollBarVisibilityProperty.PropertyName)
+				UpdateHorizontalScrollBarVisibility();
+			else if (e.PropertyName == ScrollView.VerticalScrollBarVisibilityProperty.PropertyName)
+				UpdateVerticalScrollBarVisibility();
 		}
 
 		void UpdateIsEnabled()
@@ -423,6 +429,18 @@ namespace Xamarin.Forms.Platform.Android
 					AddView(_container);
 				}
 			}
+		}
+
+		void UpdateHorizontalScrollBarVisibility()
+		{
+			if (_hScrollView != null)
+				_hScrollView.HorizontalScrollBarEnabled = _view.HorizontalScrollBarVisibility == ScrollBarVisibility.Always;
+		}
+
+		void UpdateVerticalScrollBarVisibility()
+		{
+			VerticalScrollBarEnabled = _view.VerticalScrollBarVisibility == ScrollBarVisibility.Always ||
+				_view.VerticalScrollBarVisibility == ScrollBarVisibility.Default;
 		}
 	}
 }
