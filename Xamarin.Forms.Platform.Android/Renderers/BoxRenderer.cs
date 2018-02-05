@@ -64,7 +64,7 @@ namespace Xamarin.Forms.Platform.Android
 			else
 				_backgroundDrawable.SetColor(colorToSet.ToAndroid(Color.Transparent));
 
-			Background = _backgroundDrawable;
+			this.SetBackground(_backgroundDrawable);
 		}
 
 		protected override void Dispose(bool disposing)

@@ -47,7 +47,7 @@ namespace Xamarin.Forms.Platform.GTK.Controls
             }
         }
 
-        public void UpdateHasBorderRadius(int topLeftRadius = 5, int topRightRadius = 5, int bottomLeftRadius = 5, int bottomRightRadius = 5)
+        public void UpdateBorderRadius(int topLeftRadius = 5, int topRightRadius = 5, int bottomLeftRadius = 5, int bottomRightRadius = 5)
         {
             if (_boxView != null)
             {
