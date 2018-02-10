@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using AppKit;
+using Xamarin.Forms.Core;
 using Xamarin.Forms.Platform.macOS.Controls;
 
 namespace Xamarin.Forms.Platform.MacOS
@@ -17,7 +18,7 @@ namespace Xamarin.Forms.Platform.MacOS
 				}
 
 				SetBackgroundColor(Element.Color);
-				SetCornerRadius();
+				SetCornerRadius(Element.CornerRadius);
 			}
 
 			base.OnElementChanged(e);
@@ -29,7 +30,7 @@ namespace Xamarin.Forms.Platform.MacOS
 			if (e.PropertyName == BoxView.ColorProperty.PropertyName)
 				SetBackgroundColor(Element.Color);
 			else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
-				SetCornerRadius();
+				SetCornerRadius(Element.CornerRadius);
 			else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
 				SetNeedsDisplayInRect(Bounds);
 		}
@@ -42,15 +43,14 @@ namespace Xamarin.Forms.Platform.MacOS
 			(Control as FormsBoxView)?.SetColor(color.ToNSColor());
 		}
 
-		void SetCornerRadius()
+		void SetCornerRadius(CornerRadius cornerRadius)
 		{
 			if (Element == null)
 				return;
 
-			var elementCornerRadius = Element.CornerRadius;
+			Control.Layer.MasksToBounds = true;
 
-			Layer.MasksToBounds = true;
-			Layer.CornerRadius = (float)elementCornerRadius.TopLeft;
+			(Control as FormsBoxView)?.SetCornerRadius((float)cornerRadius.TopLeft, (float)cornerRadius.TopRight, (float)cornerRadius.BottomLeft, (float)cornerRadius.BottomRight);
 		}
 	}
 }
