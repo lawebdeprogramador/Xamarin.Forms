@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Android.Support.V4.View;
@@ -91,7 +92,7 @@ namespace Xamarin.Forms.Platform.Android
 				if (Element is Label label)
 					return label.FormattedText?.Spans;
 
-				return null;
+				return new List<Span>();
 			}),
 				new PanGestureHandler(() => View, context.FromPixels));
 
