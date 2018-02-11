@@ -10,6 +10,19 @@ namespace Xamarin.Forms.Maps
 {
 	public class Map : View, IEnumerable<Pin>
 	{
+		public static readonly BindableProperty PinsSourceProperty = BindableProperty.Create("PinsSource", typeof(IList<Pin>), typeof(Map), default(IList<Pin>), BindingMode.TwoWay, null, propertyChanged: (bindable, oldvalue, newvalue) =>
+		{
+			if (newvalue != null)
+			{
+				var pins = (IList<Pin>)newvalue;
+
+				foreach (var pin in pins)
+					((Map)bindable).Pins.Add(pin);
+			}
+		});
+
+		public static readonly BindableProperty PinTemplateProperty = BindableProperty.Create("PinTemplate", typeof(DataTemplate), typeof(Map));
+
 		public static readonly BindableProperty MapTypeProperty = BindableProperty.Create("MapType", typeof(MapType), typeof(Map), default(MapType));
 
 		public static readonly BindableProperty IsShowingUserProperty = BindableProperty.Create("IsShowingUser", typeof(bool), typeof(Map), default(bool));
@@ -33,6 +46,18 @@ namespace Xamarin.Forms.Maps
 		// center on Rome by default
 		public Map() : this(new MapSpan(new Position(41.890202, 12.492049), 0.1, 0.1))
 		{
+		}
+
+		public IList<Pin> PinsSource
+		{
+			get { return (IList<Pin>)GetValue(PinsSourceProperty); }
+			set { SetValue(PinsSourceProperty, value); }
+		}
+
+		public DataTemplate PinTemplate
+		{
+			get { return (DataTemplate)GetValue(PinTemplateProperty); }
+			set { SetValue(PinTemplateProperty, value); }
 		}
 
 		public bool HasScrollEnabled

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 x:Class="Xamarin.Forms.Controls.GalleryPages.BindableMap.BindableMapPage"
+			 xmlns:templates="clr-namespace:Xamarin.Forms.Controls.GalleryPages.BindableMap"
+			 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps">
+	<ContentPage.Content>
+		<StackLayout>
+			<maps:Map 
+				x:Name="MyMap"
+				PinsSource="{Binding Pins}">
+				<maps:Map.PinTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<templates:PinTemplate />
+						</ViewCell>
+					</DataTemplate>
+				</maps:Map.PinTemplate>
+			</maps:Map>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

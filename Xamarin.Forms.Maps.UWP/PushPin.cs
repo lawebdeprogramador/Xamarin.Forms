@@ -10,15 +10,19 @@ namespace Xamarin.Forms.Maps.UWP
 {
 	internal class PushPin : ContentControl
 	{
-		readonly Pin _pin;
+		readonly CustomPin _pin;
 
-		internal PushPin(Pin pin)
+		internal PushPin(Pin pin, DataTemplate pinTemplate = null)
 		{
 			if (pin == null)
 				throw new ArgumentNullException();
 
-			ContentTemplate = Windows.UI.Xaml.Application.Current.Resources["PushPinTemplate"] as Windows.UI.Xaml.DataTemplate;
-			DataContext = Content = _pin = pin;
+			if (pinTemplate != null)
+				ContentTemplate = Windows.UI.Xaml.Application.Current.Resources["ViewCell"] as Windows.UI.Xaml.DataTemplate;
+			else
+				ContentTemplate = Windows.UI.Xaml.Application.Current.Resources["PushPinTemplate"] as Windows.UI.Xaml.DataTemplate;
+
+			DataContext = Content = _pin = new CustomPin(pin, pinTemplate);
 
 			UpdateLocation();
 
@@ -60,5 +64,23 @@ namespace Xamarin.Forms.Maps.UWP
 			MapControl.SetLocation(this, location);
 			MapControl.SetNormalizedAnchorPoint(this, anchor);
 		}
+	}
+
+	internal class CustomPin : Pin
+	{
+		internal CustomPin(Pin pin, DataTemplate pinTemplate = null)
+		{
+			Address = pin.Address;
+			Label = pin.Label;
+			Position = pin.Position;
+			Type = pin.Type;
+
+			if (pinTemplate != null)
+			{
+				Cell = pinTemplate.CreateContent() as ViewCell;
+			}
+		}
+
+		public Cell Cell { get; set; }
 	}
 }

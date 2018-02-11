@@ -147,7 +147,9 @@ namespace Xamarin.Forms.Maps.UWP
 
 		void LoadPin(Pin pin)
 		{
-			Control.Children.Add(new PushPin(pin));
+			var pinTemplate = Element.PinTemplate as DataTemplate;
+
+			Control.Children.Add(new PushPin(pin, pinTemplate));
 		}
 
 		async Task UpdateIsShowingUser(bool moveToLocation = true)
