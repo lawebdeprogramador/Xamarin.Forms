@@ -8,10 +8,10 @@ using System.Linq;
 namespace Xamarin.Forms
 {
 	[ContentProperty("Spans")]
-	public class FormattedString : BindableObject
+	public class FormattedString : Element
 	{
 		readonly SpanCollection _spans = new SpanCollection();
-
+		
 		public FormattedString()
 		{
 			_spans.CollectionChanged += OnCollectionChanged;
@@ -49,11 +49,13 @@ namespace Xamarin.Forms
 			if (e.OldItems != null)
 			{
 				foreach (object item in e.OldItems)
-				{
-					var bo = item as Span;
-					SetInheritedBindingContext(bo, null);
-					if (bo != null)
-						bo.PropertyChanged -= OnItemPropertyChanged;
+				{	
+					if (item is Span span)
+					{
+						SetInheritedBindingContext(span, null);
+						span.PropertyChanged -= OnItemPropertyChanged;
+						span.Parent = null;
+					}
 				}
 			}
 
@@ -61,10 +63,12 @@ namespace Xamarin.Forms
 			{
 				foreach (object item in e.NewItems)
 				{
-					var bo = item as Span;
-					SetInheritedBindingContext(bo, this.BindingContext);
-					if (bo != null)
-						bo.PropertyChanged += OnItemPropertyChanged;
+					if (item is Span span)
+					{
+						span.Parent = this;
+						SetInheritedBindingContext(span, this.BindingContext);
+						span.PropertyChanged += OnItemPropertyChanged;
+					}
 				}
 			}
 
