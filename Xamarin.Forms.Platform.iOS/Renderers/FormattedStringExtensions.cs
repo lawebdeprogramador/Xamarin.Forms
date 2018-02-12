@@ -59,8 +59,9 @@ namespace Xamarin.Forms.Platform.MacOS
 
 #if __MOBILE__
 			UIFont targetFont;
+			IFontElement fontElement = (IFontElement)owner;
 			if (span.IsDefault())
-				targetFont = ((IFontElement)owner).ToUIFont();
+				targetFont = fontElement.ToUIFont();
 			else
 				targetFont = span.ToUIFont();
 
@@ -70,7 +71,15 @@ namespace Xamarin.Forms.Platform.MacOS
 			if (fgcolor.IsDefault)
 				fgcolor = Color.Black; // as defined by apple docs
 
-			return new NSAttributedString(span.Text, targetFont, fgcolor.ToUIColor(), span.BackgroundColor.ToUIColor());
+			NSUnderlineStyle underlineStyle;
+			NSUnderlineStyle strikeThroughStyle;
+
+			underlineStyle = span.FontAttributes.HasFlag(FontAttributes.Underline) ? NSUnderlineStyle.Single : NSUnderlineStyle.None;
+			strikeThroughStyle = span.FontAttributes.HasFlag(FontAttributes.Strike) ? NSUnderlineStyle.Single : NSUnderlineStyle.None;
+
+			var result = new NSAttributedString(span.Text, targetFont, fgcolor.ToUIColor(), span.BackgroundColor.ToUIColor(), underlineStyle: underlineStyle, strikethroughStyle: strikeThroughStyle);
+
+			return result;
 #else
 			NSFont targetFont;
 			if (span.IsDefault())

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Foundation;
 using RectangleF = CoreGraphics.CGRect;
 using SizeF = CoreGraphics.CGSize;
 
@@ -301,6 +302,15 @@ namespace Xamarin.Forms.Platform.MacOS
 
 #if __MOBILE__
 			Control.Font = Element.ToUIFont();
+			if (Element.IsSet(Label.FontAttributesProperty))
+			{
+				NSUnderlineStyle underlineStyle;
+				NSUnderlineStyle strikeThroughStyle;
+
+				underlineStyle = Element.FontAttributes.HasFlag(FontAttributes.Underline) ? NSUnderlineStyle.Single : NSUnderlineStyle.None;
+				strikeThroughStyle = Element.FontAttributes.HasFlag(FontAttributes.Strike) ? NSUnderlineStyle.Single : NSUnderlineStyle.None;
+				Control.AttributedText = new Foundation.NSAttributedString(Element.Text, underlineStyle: underlineStyle, strikethroughStyle: strikeThroughStyle);
+			}
 #else
 			Control.Font = Element.ToNSFont();
 #endif
