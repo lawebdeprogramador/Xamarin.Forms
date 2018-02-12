@@ -29,6 +29,8 @@ namespace Xamarin.Forms.Controls
 			var italicfont = new Label { Text = "Custom Italic Font" };
 			var boldfont = new Label { Text = "Custom Bold Font" };
 			var bolditalicfont = new Label { Text = "Custom Bold Italic Font" };
+			var underline = new Label { Text = "Change Underline On Click" };
+			var strike = new Label { Text = "Change Strikethrough On Click" };
 			var huge = new Label {
 				Text = "This is the label that never ends, yes it go on and on my friend. " +
 				"Some people started catting it not knowing what it was, and they'll continue catting it forever just because...",
@@ -39,7 +41,7 @@ namespace Xamarin.Forms.Controls
 #pragma warning disable 618
 						new Span {Text="FormattedStrings ", ForegroundColor=Color.Blue, BackgroundColor = Color.Yellow, Font = Font.BoldSystemFontOfSize (NamedSize.Large)},
 #pragma warning restore 618
-						new Span {Text="are ", ForegroundColor=Color.Red, BackgroundColor = Color.Gray},
+						new Span {Text="are ", ForegroundColor=Color.Red, BackgroundColor = Color.Gray, FontAttributes = FontAttributes.Underline},
 						new Span {Text="not pretty!", ForegroundColor = Color.Green,},
 					}
 				} };
@@ -71,6 +73,12 @@ namespace Xamarin.Forms.Controls
 
 #pragma warning disable 618
 			bolditalic.Font = Font.SystemFontOfSize (NamedSize.Medium, FontAttributes.Bold | FontAttributes.Italic);
+#pragma warning restore 618
+#pragma warning disable 618
+			underline.Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Underline);
+#pragma warning restore 618
+#pragma warning disable 618
+			strike.Font = Font.SystemFontOfSize(NamedSize.Medium, FontAttributes.Strike);
 #pragma warning restore 618
 			string fontName;
 			switch (Device.RuntimePlatform) {
@@ -122,6 +130,21 @@ namespace Xamarin.Forms.Controls
 				color.BackgroundColor = new Color (0, 1, 0);
 			})});
 
+			underline.GestureRecognizers.Add(new TapGestureRecognizer
+			{ Command = new Command(o =>
+		   {
+			   underline.FontAttributes ^= FontAttributes.Bold;
+			   underline.FontAttributes ^= FontAttributes.Underline;
+		   }) });
+
+			strike.GestureRecognizers.Add(new TapGestureRecognizer
+			{
+				Command = new Command(o =>
+				{
+					strike.FontAttributes ^= FontAttributes.Strike;
+				})
+			});
+
 			Thickness padding = new Thickness (20);
 			// Padding Adjust for iPad
 			if (Device.RuntimePlatform == Device.iOS && Device.Idiom == TargetIdiom.Tablet)
@@ -148,6 +171,8 @@ namespace Xamarin.Forms.Controls
 						bold,
 						italic,
 						bolditalic,
+						underline,
+						strike,
 						customFont,
 						italicfont,
 						boldfont,

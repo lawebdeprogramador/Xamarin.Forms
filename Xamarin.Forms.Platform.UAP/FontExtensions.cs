@@ -65,5 +65,57 @@ namespace Xamarin.Forms.Platform.UWP
 		{
 			return self.FontFamily == null && self.FontSize == Device.GetNamedSize(NamedSize.Default, typeof(Label), true) && self.FontAttributes == FontAttributes.None;
 		}
+
+		public static void SetTextDecoration(this TextBlock self, FontAttributes fontAttributes)
+		{
+			if (HasTextDecorationChanges(self, fontAttributes))
+			{
+				var addUnderline = self.TextDecorations | TextDecorations.Underline;
+				var removeUnderline = self.TextDecorations & ~TextDecorations.Underline;
+
+				self.TextDecorations = fontAttributes.HasFlag(FontAttributes.Underline) ? addUnderline : removeUnderline;
+
+				var addStrike = self.TextDecorations | TextDecorations.Strikethrough;
+				var removeStrike = self.TextDecorations & ~TextDecorations.Strikethrough;
+
+				self.TextDecorations = fontAttributes.HasFlag(FontAttributes.Strike) ? addStrike : removeStrike;
+				//text decorations do not update in the UI until the text is also changed...
+				self.Text += "";
+			}
+		}
+
+		public static void SetTextDecoration(this Windows.UI.Xaml.Documents.TextElement self, FontAttributes fontAttributes)
+		{
+			if (HasTextDecorationChanges(self, fontAttributes))
+			{
+				var addUnderline = self.TextDecorations | TextDecorations.Underline;
+				var removeUnderline = self.TextDecorations & ~TextDecorations.Underline;
+
+				self.TextDecorations = fontAttributes.HasFlag(FontAttributes.Underline) ? addUnderline : removeUnderline;
+
+				var addStrike = self.TextDecorations | TextDecorations.Strikethrough;
+				var removeStrike = self.TextDecorations & ~TextDecorations.Strikethrough;
+
+				self.TextDecorations = fontAttributes.HasFlag(FontAttributes.Strike) ? addStrike : removeStrike;
+			}
+		}
+
+		static bool HasTextDecorationChanges(TextBlock textBlock, FontAttributes fontAttributes)
+		{
+			var nativeFlags = textBlock.TextDecorations;
+			var sameStrikeValue = nativeFlags.HasFlag(TextDecorations.Strikethrough) == fontAttributes.HasFlag(FontAttributes.Strike);
+			var sameUnderlineValue = nativeFlags.HasFlag(TextDecorations.Underline) == fontAttributes.HasFlag(FontAttributes.Underline);
+
+			return (!sameStrikeValue) || (!sameUnderlineValue);
+		}
+
+		static bool HasTextDecorationChanges(Windows.UI.Xaml.Documents.TextElement textElement, FontAttributes fontAttributes)
+		{
+			var nativeFlags = textElement.TextDecorations;
+			var sameStrikeValue = nativeFlags.HasFlag(TextDecorations.Strikethrough) == fontAttributes.HasFlag(FontAttributes.Strike);
+			var sameUnderlineValue = nativeFlags.HasFlag(TextDecorations.Underline) == fontAttributes.HasFlag(FontAttributes.Underline);
+
+			return (!sameStrikeValue) || (!sameUnderlineValue);
+		}
 	}
 }

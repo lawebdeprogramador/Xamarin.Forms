@@ -84,7 +84,12 @@ namespace Xamarin.Forms.Platform.Android
 			void Apply(Paint paint)
 			{
 				paint.SetTypeface(Font.ToTypeface());
+
+				paint.StrikeThruText =  paint.StrikeThruText || Font.FontAttributes.HasFlag(FontAttributes.Strike);
+				paint.UnderlineText = paint.UnderlineText || Font.FontAttributes.HasFlag(FontAttributes.Underline);
+
 				float value = Font.ToScaledPixel();
+				
 				paint.TextSize = TypedValue.ApplyDimension(ComplexUnitType.Sp, value, TextView.Resources.DisplayMetrics);
 			}
 		}

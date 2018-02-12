@@ -15,14 +15,24 @@ namespace Xamarin.Forms.Platform.UWP
 		public static Run ToRun(this Span span)
 		{
 			var run = new Run { Text = span.Text ?? string.Empty };
+			var textDecoration = run.TextDecorations;
 
 			if (span.ForegroundColor != Color.Default)
 				run.Foreground = span.ForegroundColor.ToBrush();
 
 			if (!span.IsDefault())
+			{
 #pragma warning disable 618
 				run.ApplyFont(span.Font);
 #pragma warning restore 618
+				run.SetTextDecoration(span.FontAttributes);
+				if (run.TextDecorations != textDecoration)
+				{
+					//text decorations do not update in the UI until the text is also changed...
+					run.Text += "";
+				}
+			}
+
 
 			return run;
 		}
@@ -199,6 +209,11 @@ namespace Xamarin.Forms.Platform.UWP
 #pragma warning restore 618
 
 			textBlock.ApplyFont(fontToApply);
+			if(Element.IsSet(Label.FontAttributesProperty))
+			{
+				UpdateTextDecoration(textBlock);
+			}
+
 			_fontApplied = true;
 		}
 
@@ -284,6 +299,11 @@ namespace Xamarin.Forms.Platform.UWP
 					textBlock.TextReadingOrder = TextReadingOrder.UseFlowDirection;
 				}
 			}
+		}
+
+		void UpdateTextDecoration(TextBlock textBlock)
+		{
+			textBlock.SetTextDecoration(Element.FontAttributes);
 		}
 	}
 }

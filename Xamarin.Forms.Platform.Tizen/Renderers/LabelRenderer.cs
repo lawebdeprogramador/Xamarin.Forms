@@ -97,6 +97,7 @@ namespace Xamarin.Forms.Platform.Tizen
 			Control.FontAttributes = Element.FontAttributes;
 			Control.FontFamily = Element.FontFamily;
 
+
 			Control.BatchCommit();
 		}
 

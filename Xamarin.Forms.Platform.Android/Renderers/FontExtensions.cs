@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Android.Graphics;
+using Android.Widget;
 using AApplication = Android.App.Application;
 using Xamarin.Forms.Internals;
 
@@ -114,6 +115,25 @@ namespace Xamarin.Forms.Platform.Android
 			else if ((attrs & FontAttributes.Italic) != 0)
 				style = TypefaceStyle.Italic;
 			return style;
+		}
+
+		public static void SetTextDecoration(this TextView textView, IFontElement fontElement)
+		{
+			if (HasTextDecorationChange(textView, fontElement))
+			{
+				textView.PaintFlags = fontElement.FontAttributes.HasFlag(FontAttributes.Underline) ? textView.PaintFlags | PaintFlags.UnderlineText : textView.PaintFlags & ~PaintFlags.UnderlineText;
+				textView.PaintFlags = fontElement.FontAttributes.HasFlag(FontAttributes.Strike) ? textView.PaintFlags | PaintFlags.StrikeThruText : textView.PaintFlags & ~PaintFlags.StrikeThruText;
+			}
+		}
+
+		static bool HasTextDecorationChange(TextView textView, IFontElement fontElement)
+		{
+			var nativePaintFlags = textView.PaintFlags;
+			var fontAttributeFlags = fontElement.FontAttributes;
+			var sameStrikeValue = nativePaintFlags.HasFlag(PaintFlags.StrikeThruText) == fontAttributeFlags.HasFlag(FontAttributes.Strike);
+			var sameUnderlineValue = nativePaintFlags.HasFlag(PaintFlags.UnderlineText) == fontAttributeFlags.HasFlag(FontAttributes.Underline);
+
+			return (!sameStrikeValue) || (!sameUnderlineValue);
 		}
 
 		static string FontNameToFontFile(string fontFamily)

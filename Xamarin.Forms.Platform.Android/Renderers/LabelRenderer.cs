@@ -158,6 +158,11 @@ namespace Xamarin.Forms.Platform.Android
 				_view.SetTextSize(ComplexUnitType.Sp, newTextSize);
 				_lastTextSize = newTextSize;
 			}
+
+			if (Element.IsSet(Label.FontAttributesProperty))
+			{
+				_view.SetTextDecoration(Element);
+			}
 		}
 
 		void UpdateGravity()
